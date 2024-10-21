@@ -1,22 +1,36 @@
-import logo from './logo.svg';
+import img from './img/rick-morty.png'
 import './App.css';
+import { useState } from 'react';
+import Characters from './components/characters';
 
 function App() {
+
+  //Intengrar la api en nuestra pagina, 
+const [characters, setCharacters] = useState(null);
+//este const es para que pueda buscar al hacer click en el buton 
+const reqApi =async () => {
+  // el fecth es donde estamos cogiendo los datos de los personajes 
+  const api = await fetch('https://rickandmortyapi.com/api/character');
+  const characterApi = await api.json();
+  
+  setCharacters(characterApi.results)
+};
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+       <h1 className='title'>Ricky & Morty</h1>
+       {characters ? (
+         <Characters characters ={characters} setCharacters={setCharacters}  />
+       ):(
+       <>
+       <img src={img} alt="ricky&morty" className="img-home"/>
+       <button onClick={reqApi} className='btn-search'>Buscar Personajes </button>
+       
+       </>
+       )}
+       
+       
       </header>
     </div>
   );
